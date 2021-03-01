@@ -26,22 +26,19 @@ export default function App () {
       <Switch>
           <PrivateRoute
               path="/contacts"
-              redirectTo="/login"
-              component={Phonebook}
-            />
+              redirectTo="/login"              
+            ><Phonebook/></PrivateRoute>
         <PublicRoute
               path="/register"
               restricted
-              redirectTo="/contacts"
-              component={Register}
-            />
+              redirectTo="/contacts"              
+            ><Register/></PublicRoute>
           <PublicRoute
               path="/login"
               restricted
-              redirectTo="/contacts"
-              component={Login}
-            />       
-          <PublicRoute exact path="/" component={StartPage} />
+              redirectTo="/contacts"              
+            ><Login/></PublicRoute>       
+          <PublicRoute exact path="/"><StartPage/></PublicRoute>
         </Switch>      
       </Router>
   )   

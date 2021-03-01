@@ -1,0 +1,24 @@
+.whoo {
+  background-color: gold;
+}
+.whoo:not(:last-child) {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.whoo h1 {
+  margin: 0;
+  margin-bottom: 40px;
+  font-size: 30px;
+  text-transform: uppercase;
+  color: cadetblue;
+  text-align: center;
+}
+.appear {
+  transform: translateX(-100%);
+  opacity: 0.1;
+}
+.appearActive {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 500ms ease-in;
+}

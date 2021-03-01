@@ -1,0 +1,73 @@
+.list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.item {
+  background-color: rgb(35, 173, 16);
+  display: inline-block;
+  border-radius: 20px;
+  text-align: center;
+  margin-right: 20px;
+  padding: 15px;
+  text-transform: uppercase;
+  color: #09077a;
+}
+.deleteButton {
+  padding: 10px;
+  text-transform: uppercase;
+  outline: none;
+  border: none;
+  background-color: rgb(7, 65, 255);
+  color: #ffffff;
+  transition: 0.4s ease-in-out;
+  border-radius: 25px;
+}
+.deleteButton:hover {
+  transform: scale(1.1);
+  background-color: red;
+}
+.list .addContact {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 26px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  color: red;
+  border-bottom: 2px solid red;
+  margin-bottom: 150px;
+}
+.appear {
+  transform: translateY(-100%);
+  opacity: 0.1;
+}
+.appearActive {
+  transform: translateY(0);
+  opacity: 1;
+  transition: all 250ms ease-in;
+}
+
+.enter {
+  transform: translateY(-100%);
+  opacity: 0.1;
+}
+.enterActive {
+  transform: translateY(0);
+  opacity: 1;
+  transition: all 250ms ease-in;
+}
+
+.exit {
+  transform: translateY(0);
+  opacity: 1;
+}
+.exitActive {
+  transform: translateY(-100%);
+  opacity: 0.1;
+  transition: all 250ms ease-in;
+}

@@ -1,0 +1,45 @@
+.div {
+  padding-bottom: 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.div label {
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: rgb(19, 144, 153);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.div input {
+  padding: 15px;
+  transition: 0.4s ease-in-out;
+  outline: none;
+  border: 2px solid rgb(43, 37, 2);
+  width: 200px;
+  border-radius: 25px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.div input:focus {
+  border: 2px solid rgb(11, 207, 158);
+}
+.enter {
+  transform: translateY(-100%);
+  opacity: 0.1;
+}
+.enterActive {
+  transform: translateY(0);
+  opacity: 1;
+  transition: all 250ms ease-in;
+}
+
+.exit {
+  transform: translateY(0);
+  opacity: 1;
+}
+.exitActive {
+  transform: translateY(-100%);
+  opacity: 0.1;
+  transition: all 250ms ease-in;
+}

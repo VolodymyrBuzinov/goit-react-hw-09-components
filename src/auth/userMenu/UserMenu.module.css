@@ -1,0 +1,20 @@
+.item span {
+  margin-right: 20px;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.item button {
+  padding: 10px 20px;
+  border-radius: 25px;
+  outline: none;
+  border: none;
+  background-color: mediumseagreen;
+  text-transform: uppercase;
+  color: #ffffff;
+  transition: 0.3s ease-in;
+  cursor: pointer;
+}
+.item button:hover {
+  background-color: rgb(221, 46, 15);
+}

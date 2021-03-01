@@ -1,9 +1,13 @@
 import { NavLink } from 'react-router-dom';
 import styles from './Links.module.css';
-import { connect } from 'react-redux';
 import authSelectors from './redux/auth/authSelectors/authSelectors';
 import UserMenu from './auth/userMenu/UserMenu';
-function Links({ name, isAuthorized }) {
+import { useSelector } from 'react-redux';
+
+export default function Links() {
+  const name = useSelector(authSelectors.getName);
+  const isAuthorized = useSelector(authSelectors.getAuth);
+
   return (
     <>
       <nav className={styles.nav}>
@@ -64,10 +68,3 @@ function Links({ name, isAuthorized }) {
     </>
   );
 }
-
-const mapStateToProps = state => ({
-  name: authSelectors.getName(state),
-  isAuthorized: authSelectors.getAuth(state),
-});
-
-export default connect(mapStateToProps, null)(Links);

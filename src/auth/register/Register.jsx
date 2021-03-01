@@ -1,63 +1,67 @@
-import { Component } from 'react';
+import { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import styles from './Register.module.css';
 import authOperations from '../../redux/auth/authActions/authOperations';
-import { connect } from 'react-redux';
-class Register extends Component {
-  state = {
-    name: '',
-    mail: '',
-    password: '',
+
+export default function Register() {
+  const [name, setName] = useState('');
+  const onChangeName = evt => {
+    setName(evt.target.value);
   };
-  formSubmit = evt => {
+  const [mail, setMail] = useState('');
+  const onChangeMail = evt => {
+    setMail(evt.target.value);
+  };
+  const [password, setPassword] = useState('');
+  const onChangePassword = evt => {
+    setPassword(evt.target.value);
+  };
+
+  const dispatch = useDispatch();
+  const onRegister = useCallback(
+    () =>
+      dispatch(authOperations.actionRegister(name, mail, password)),
+    [name, mail, password, dispatch],
+  );
+
+  const formSubmit = evt => {
     evt.preventDefault();
-    const { name, mail, password } = this.state;
-    this.props.onRegister(name, mail, password);
+    onRegister(name, mail, password);
   };
-  onChangeInput = evt => {
-    this.setState({ [evt.target.name]: evt.target.value });
-  };
-  render() {
-    return (
-      <div className={styles.container}>
-        <h2>Registration</h2>
-        <form className={styles.form} onSubmit={this.formSubmit}>
-          <label>
-            <span>Your name</span>
-            <input
-              type="text"
-              name="name"
-              onChange={this.onChangeInput}
-              required
-            />
-          </label>
-          <label>
-            <span>Your e-mail</span>
-            <input
-              type="text"
-              name="mail"
-              onChange={this.onChangeInput}
-              required
-            />
-          </label>
-          <label>
-            <span>Your password</span>
-            <input
-              type="text"
-              name="password"
-              onChange={this.onChangeInput}
-              required
-            />
-          </label>
-          <button type="submit">Register</button>
-        </form>
-      </div>
-    );
-  }
+
+  return (
+    <div className={styles.container}>
+      <h2>Registration</h2>
+      <form className={styles.form} onSubmit={formSubmit}>
+        <label>
+          <span>Your name</span>
+          <input
+            type="text"
+            name="name"
+            onChange={onChangeName}
+            required
+          />
+        </label>
+        <label>
+          <span>Your e-mail</span>
+          <input
+            type="text"
+            name="mail"
+            onChange={onChangeMail}
+            required
+          />
+        </label>
+        <label>
+          <span>Your password</span>
+          <input
+            type="text"
+            name="password"
+            onChange={onChangePassword}
+            required
+          />
+        </label>
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  );
 }
-
-const mapDispatchToProps = dispatch => ({
-  onRegister: (name, mail, password) =>
-    dispatch(authOperations.actionRegister(name, mail, password)),
-});
-
-export default connect(null, mapDispatchToProps)(Register);

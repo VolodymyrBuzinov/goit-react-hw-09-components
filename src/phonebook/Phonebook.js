@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import Section from '../phonebook/Section/Section'
 import Input from './Input/Input'
 import ContactsList from './ContactsList/ContactsList'
@@ -7,50 +6,60 @@ import styles from './phonebook.module.css';
 import { CSSTransition } from 'react-transition-group';
 import ErrorMessage from './messages/errorMessage';
 import SucessMessage from './messages/sucessMessage'
-import { connect } from 'react-redux';
 import actions from '../redux/phonebook/actions/operations';
 import selectors from '../redux/phonebook/selectors/selectors';
+import { useState, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-class Phonebook extends Component {
-    state = {      
-        name: '',
-      number: '',
-      error: false,
-      sucess: false,
+export default function Phonebook() {
+  
+  const [name, setName] = useState('');
+  const onNameChange = evt => {    
+    setName(evt.target.value);
+    };   
+  const [number, setNumber] = useState('');
+  const onNumberChange = evt => {    
+    setNumber(evt.target.value);
     };
-  
-  
-  
-  componentDidMount() {
-    this.props.showItems();
-  }
-  onInputChange = evt => {    
-    this.setState({ [evt.target.name]: evt.target.value });
-    };    
+  const [error, setError] = useState(false);
+  const [sucess, setSucess] = useState(false);
 
-  submitForm = evt => {
-    evt.preventDefault();    
-     this.setState({name: '', number: ''})
-    if (this.props.contacts.find(({ name }) => name.toLowerCase() === this.state.name.toLowerCase())) {      
-      this.setState({ error: true });
+  const dispatch = useDispatch();  
+  const contacts = useSelector(selectors.getItems);
+  const loading = useSelector(selectors.getLoading);
+
+  
+  
+  const onAddContact = useCallback(() => dispatch(actions.actionAdd(name, number)), [name, number, dispatch]);
+  
+
+  useEffect(() => {
+    const showItems = () => dispatch(actions.fetchContacts());
+    showItems();
+  }, [dispatch]);
+
+  const submitForm = evt => {
+    evt.preventDefault();  
+    setName('');
+    setNumber('');     
+    if (contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase())) {      
+      setError(true);
       setTimeout(() => {
-        this.setState({error: false})
+        setError(false);
       }, 2000)
       return;
     } else {
-     this.setState({ sucess: true });
+      setSucess(true);
       setTimeout(() => {
-        this.setState({sucess: false})
+        setSucess(false);
       }, 2000)
-    }
-   
-    this.props.onAddContact(this.state.name, this.state.number);
-  };
-  
-  render() {  
-    const { error, sucess } = this.state;    
+    }   
+    onAddContact(name, number);
+  };  
+    
+    
     return (<>
-      {this.props.loading && <div className={styles.skChase}>
+      {loading && <div className={styles.skChase}>
         <div className={styles.skChaseDot}></div>
   <div className={styles.skChaseDot}></div>
   <div className={styles.skChaseDot}></div>
@@ -59,10 +68,11 @@ class Phonebook extends Component {
   <div className={styles.skChaseDot}></div>
 </div>}
         <Section title='Phonebook'>
-            <Input name={this.state.name}
-          number={this.state.number}          
-          onChangeInput={this.onInputChange}
-          onSubmitForm={this.submitForm}/>    
+            <Input name={name}
+          number={number}          
+          onNameChange={onNameChange}
+          onNumberChange={onNumberChange}
+          onSubmitForm={submitForm}/>    
       </Section>      
       <Section title='Contacts'>         
           <Filter />               
@@ -76,17 +86,6 @@ class Phonebook extends Component {
         </Section>        
       </>
     )    
-  }
+  
 }
 
-const mapStateToProps = state => ({  
-  contacts: selectors.getItems(state),
-  loading: selectors.getLoading(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  onAddContact: (name, phone) => dispatch(actions.actionAdd(name, phone)),
-  showItems: () => dispatch(actions.fetchContacts()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Phonebook);

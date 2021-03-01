@@ -1,8 +1,18 @@
-import { connect } from 'react-redux';
 import authOperations from '../../redux/auth/authActions/authOperations';
 import styles from './UserMenu.module.css';
 import authSelectors from '../../redux/auth/authSelectors/authSelectors';
-function UserMenu({ name, onLogout }) {
+import { useDispatch, useSelector } from 'react-redux';
+import { useCallback } from 'react';
+
+export default function UserMenu() {
+  const dispatch = useDispatch();
+  const name = useSelector(authSelectors.getName);
+
+  const onLogout = useCallback(
+    () => dispatch(authOperations.actionLogout()),
+    [dispatch],
+  );
+
   return (
     <>
       <li className={styles.item}>
@@ -12,13 +22,3 @@ function UserMenu({ name, onLogout }) {
     </>
   );
 }
-
-const mapStateToProps = state => ({
-  name: authSelectors.getName(state),
-});
-
-const mapDispatchToProps = {
-  onLogout: authOperations.actionLogout,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserMenu);

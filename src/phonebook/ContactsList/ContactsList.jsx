@@ -1,14 +1,18 @@
-import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './ContactList.module.css';
 import {
   TransitionGroup,
   CSSTransition,
 } from 'react-transition-group';
-import { connect } from 'react-redux';
 import actions from '../../redux/phonebook/actions/operations';
 import selectors from '../../redux/phonebook/selectors/selectors';
-function ContactsList({ contacts, onContactDelete }) {
+import { useDispatch, useSelector } from 'react-redux';
+
+export default function ContactsList() {
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectors.getVisibleContacts);
+  const onContactDelete = id => dispatch(actions.actionDelete(id));
+
   return (
     <>
       <TransitionGroup component="ul" className={styles.list}>
@@ -52,29 +56,3 @@ function ContactsList({ contacts, onContactDelete }) {
     </>
   );
 }
-
-ContactsList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    }),
-  ),
-  onDeleteContact: PropTypes.func,
-};
-
-const mapStateToProps = state => {
-  return {
-    contacts: selectors.getVisibleContacts(state),
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  onContactDelete: id => dispatch(actions.actionDelete(id)),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ContactsList);

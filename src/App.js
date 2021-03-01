@@ -9,18 +9,18 @@ import Login from './auth/login/Login';
 import Links from './Links.jsx';
 import PublicRoute from './Routes/PublicRoute';
 import PrivateRoute from './Routes/PrivateRoute';
-import { Component } from 'react';
 import authOperations from './redux/auth/authActions/authOperations';
-import { connect } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-class App extends Component {
+export default function App () {
+  const dispatch = useDispatch();  
+   useEffect(() => {
+    const getCurrentUser = () => dispatch(authOperations.actionGetCurrent());
+    getCurrentUser();
+  }, [dispatch]);  
 
-  componentDidMount() {
-    this.props.getCurrentUser();
-  }
-
-  render() {
-    return (
+     return (
     <Router>
       <Links/>
       <Switch>
@@ -44,14 +44,9 @@ class App extends Component {
           <PublicRoute exact path="/" component={StartPage} />
         </Switch>      
       </Router>
-  );
-  }  
+  )   
 }
 
 
-const mapDispatchToProps = dispatch => ({
-  getCurrentUser: () => dispatch(authOperations.actionGetCurrent()),  
-});
 
-export default connect(null, mapDispatchToProps)(App);
 
